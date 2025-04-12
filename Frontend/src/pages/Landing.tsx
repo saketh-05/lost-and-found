@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Search, FileText, CheckSquare, MessageCircle, Facebook, Instagram, Linkedin, Twitter, MapPin } from 'lucide-react';
 
 function Landing() {
@@ -91,7 +92,7 @@ function Landing() {
               </p>
             </div>
             
-            <div className="feature-card p-8 rounded-2xl card-hover fade-in">
+            <Link to="/reportlostitem" className="feature-card p-8 rounded-2xl card-hover fade-in">
               <div className="bg-teal-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
                 <FileText className="w-8 h-8 text-teal-600" />
               </div>
@@ -99,7 +100,7 @@ function Landing() {
               <p className="text-gray-600 leading-relaxed">
                 Submit detailed information about your missing belongings
               </p>
-            </div>
+            </Link>
             
             <div className="feature-card p-8 rounded-2xl card-hover fade-in">
               <div className="bg-teal-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
