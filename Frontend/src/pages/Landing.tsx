@@ -102,7 +102,7 @@ function Landing() {
               </p>
             </Link>
             
-            <div className="feature-card p-8 rounded-2xl card-hover fade-in">
+            <Link to='/reportfounditem'className="feature-card p-8 rounded-2xl card-hover fade-in">
               <div className="bg-teal-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
                 <CheckSquare className="w-8 h-8 text-teal-600" />
               </div>
@@ -110,7 +110,7 @@ function Landing() {
               <p className="text-gray-600 leading-relaxed">
                 Help others by reporting items you've found in your area
               </p>
-            </div>
+            </Link>
             
             <div className="feature-card p-8 rounded-2xl card-hover fade-in">
               <div className="bg-teal-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
