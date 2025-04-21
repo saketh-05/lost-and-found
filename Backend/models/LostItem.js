@@ -14,5 +14,5 @@ const LostItemSchema = new mongoose.Schema({
   return_done: { type: Boolean, default: false },
   featureVector: { type: Array, default: [] } // OpenCV feature vector
 });
-
+LostItemSchema.index({ location: "2dsphere" });
 module.exports = mongoose.model("LostItem", LostItemSchema);
