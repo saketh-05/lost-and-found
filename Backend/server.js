@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const LostItem = require('./models/LostItem');
 const FoundItem = require('./models/FoundItem');
 const UserContact = require('./models/UserContact');
-
+const { sendLostItemEmail, sendFoundItemEmail } = require('./utils/email');
 const app = express();
 const port = 5000;
 
@@ -87,44 +87,78 @@ app.post('/found-item', async (req, res) => {
     });
 
     if (matchingLostItems.length > 0) {
-      // Send email to the user who lost the item
+      // Send email to the user who lost the item using sendFoundItemEmail
       const lostItem = matchingLostItems[0]; // Taking the first match
-      const subject = 'Found Item Reported';
-      const text = `Hi, a found item matching your report has been found! Here are the details:
-      Item Name: ${lostItem.itemName}
-      Description: ${lostItem.description}
-      Location: ${lostItem.city}
-      Contact: ${newFoundItem.email}`;
-      const html = `<h3>Found Item Reported</h3>
-      <p>Hi, a found item matching your report has been found!</p>
-      <p><strong>Item Name:</strong> ${lostItem.itemName}</p>
-      <p><strong>Description:</strong> ${lostItem.description}</p>
-      <p><strong>Location:</strong> ${lostItem.city}</p>
-      <p><strong>Contact:</strong> ${newFoundItem.email}</p>`;
+      sendFoundItemEmail(lostItem, newFoundItem); // Use sendFoundItemEmail function
 
-      sendEmail(lostItem.email, subject, text, html);
     }
 
     res.status(201).json({ success: true, message: 'Found item reported successfully' });
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Error reporting found item', error: err });
+    console.error("Error reporting found item:", err); // This will show the actual error
+    res.status(500).json({ success: false, message: 'Error reporting found item', error: err.message || err });
   }
 });
 
 // Route to search for found items
 app.get('/found-item/search', async (req, res) => {
-  const { itemName, city, location } = req.query;
+  const { itemName, city } = req.query;
 
   try {
-    const query = {};
-    if (itemName) query.itemName = itemName;
-    if (city) query.city = city;
-    if (location) query.location = location;
+    const query = {
+      return_done: false
+    };
+
+    if (itemName) query.itemName = { $regex: `${itemName}`, $options: 'i' };
+    if (city) query.city = { $regex: `${city}`, $options: 'i' };
+
+    console.log("Search query:", query);
 
     const foundItems = await FoundItem.find(query);
     res.status(200).json({ success: true, foundItems });
   } catch (err) {
+    console.error("Error in found item search:", err);
     res.status(500).json({ success: false, message: 'Error searching found items', error: err });
+  }
+});
+app.post('/report-lost-item', async (req, res) => {
+  const { email, itemName, description, image, city, location, featureVector } = req.body;
+
+  try {
+      // Step 1: Check if item exists in the found collection (as before)
+      const foundItem = await FoundItem.findOne({
+          itemName: { $regex: new RegExp(itemName, 'i') },
+          city: { $regex: new RegExp(city, 'i') }
+      });
+
+      if (foundItem) {
+          // Item is found, handle the email to the victim and helper (as in your earlier code)
+      } else {
+          // Step 2: Item not found, add to the Lost Items collection
+          const newLostItem = new LostItem({
+              email,
+              itemName,
+              description,
+              image,
+              city,
+              location,
+              featureVector,
+          });
+
+          await newLostItem.save();
+
+          // Step 3: Send email to nearby users about the lost item
+          await sendLostItemEmail(newLostItem);
+
+          res.status(200).json({
+              success: true,
+              message: "Lost item added successfully and nearby users notified.",
+              lostItem: newLostItem
+          });
+      }
+  } catch (err) {
+      console.error('Error reporting lost item:', err);
+      res.status(500).json({ success: false, message: 'Error reporting lost item' });
   }
 });
 
