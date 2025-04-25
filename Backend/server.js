@@ -142,7 +142,7 @@ app.post('/lost-item', async (req, res) => {
   const { email, itemName, description, image, city, location, featureVector } = req.body;
 
   try {
-    // Check if the user provided all the necessary information
+    // Check if the user provided all the necessary information-randomcommit
     if (!email || !itemName || !city) {
       return res.status(400).json({ success: false, message: 'Missing required fields' });
     }
