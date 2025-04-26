@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Smartphone, Backpack, Wallet, Key, MapPin, Mail } from 'lucide-react';
 
 export default function ReportLostItem() {
@@ -14,47 +15,63 @@ export default function ReportLostItem() {
     date: new Date().toISOString().split('T')[0],
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    setFormData({
-      email: '',
-      itemName: '',
-      description: '',
-      image: '',
-      city: '',
-      location: {
-        coordinates: [0, 0]
-      },
-      date: new Date().toISOString().split('T')[0],
-    });
+
+    try {
+      const lostItemData = {
+        ...formData,
+        location: {
+          type: 'Point',
+          coordinates: [formData.location.coordinates[0], formData.location.coordinates[1]]
+        }
+      };
+
+      const response = await axios.post('http://localhost:5000/lost-item', lostItemData);
+      console.log(response.data);
+      alert('Lost item reported successfully!');
+
+      setFormData({
+        email: '',
+        itemName: '',
+        description: '',
+        image: '',
+        city: '',
+        location: {
+          coordinates: [0, 0]
+        },
+        date: new Date().toISOString().split('T')[0],
+      });
+
+    } catch (error) {
+      console.error(error);
+      alert('Failed to report the lost item. Please try again.');
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-teal-500 to-white">
-             <nav className="container mx-auto px-8 py-6">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="w-8 h-8 text-white" />
-                    <h1 className="text-3xl font-bold text-white">Lost & Found</h1>
-                  </div>
-                  <div className="flex items-center space-x-8">
-                    <a href="#" className="nav-link text-white text-xl font-semibold hover:text-teal-200 transition-colors">Found Items</a>
-                    <a href="#" className="nav-link text-white text-xl font-semibold hover:text-teal-200 transition-colors">About Us</a>
-                    <a href="#" className="nav-link text-white text-xl font-semibold hover:text-teal-200 transition-colors">Profile</a>
-                
-                  </div>
-                </div>
-              </nav>
-
+      <nav className="container mx-auto px-8 py-6">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <MapPin className="w-8 h-8 text-white" />
+            <h1 className="text-3xl font-bold text-white">Lost & Found</h1>
+          </div>
+          <div className="flex items-center space-x-8">
+            <a href="#" className="nav-link text-white text-xl font-semibold hover:text-teal-200 transition-colors">Found Items</a>
+            <a href="#" className="nav-link text-white text-xl font-semibold hover:text-teal-200 transition-colors">About Us</a>
+            <a href="#" className="nav-link text-white text-xl font-semibold hover:text-teal-200 transition-colors">Profile</a>
+          </div>
+        </div>
+      </nav>
 
       <div className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">Report Lost Item</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
-              
 
+              {/* Item Name */}
               <div>
                 <label htmlFor="itemName" className="block text-sm font-medium text-gray-700">Item Name</label>
                 <input
@@ -67,6 +84,7 @@ export default function ReportLostItem() {
                 />
               </div>
 
+              {/* Description */}
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
                 <textarea
@@ -79,30 +97,29 @@ export default function ReportLostItem() {
                 />
               </div>
 
+              {/* Image Upload */}
               <div>
                 <label htmlFor="image" className="block text-sm font-medium text-gray-700">Image</label>
-                <div className="mt-1 flex items-center">
-                  <input
-                    type="file"
-                    id="image"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        setFormData({ ...formData, image: URL.createObjectURL(file) });
-                      }
-                    }}
-                    className="mt-1 block w-full text-sm text-gray-500
+                <input
+                  type="file"
+                  id="image"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setFormData({ ...formData, image: URL.createObjectURL(file) });
+                    }
+                  }}
+                  className="mt-1 block w-full text-sm text-gray-500
                       file:mr-4 file:py-2 file:px-4
                       file:rounded-md file:border-0
                       file:text-sm file:font-semibold
                       file:bg-teal-50 file:text-teal-600
                       hover:file:bg-teal-100"
-                    required
-                  />
-                </div>
+                />
               </div>
-              
+
+              {/* City */}
               <div>
                 <label htmlFor="city" className="block text-sm font-medium text-gray-700">City</label>
                 <div className="mt-1 relative rounded-md shadow-sm">
@@ -114,12 +131,13 @@ export default function ReportLostItem() {
                     id="city"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 focus:outline-none"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 focus:outline-none pl-10"
                     required
                   />
                 </div>
               </div>
 
+              {/* Latitude and Longitude */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="latitude" className="block text-sm font-medium text-gray-700">Latitude</label>
@@ -161,6 +179,7 @@ export default function ReportLostItem() {
                 </div>
               </div>
 
+              {/* Date Lost */}
               <div>
                 <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date Lost</label>
                 <input
@@ -172,6 +191,8 @@ export default function ReportLostItem() {
                   required
                 />
               </div>
+
+              {/* Email */}
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
                 <div className="mt-1 relative rounded-md shadow-sm">
@@ -183,11 +204,13 @@ export default function ReportLostItem() {
                     id="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 focus:outline-none"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 focus:outline-none pl-10"
                     required
                   />
                 </div>
               </div>
+
+              {/* Submit button */}
               <button
                 type="submit"
                 className="w-full bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-colors"
@@ -197,9 +220,11 @@ export default function ReportLostItem() {
             </form>
           </div>
 
+          {/* Recent lost items static section */}
           <div className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">Recent Lost Items</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Example Cards */}
               <div className="p-4 border border-gray-200 rounded-lg flex items-start space-x-4">
                 <Smartphone className="w-8 h-8 text-teal-600" />
                 <div>
@@ -208,6 +233,7 @@ export default function ReportLostItem() {
                   <p className="text-gray-400 text-sm mt-1">April 10, 2024</p>
                 </div>
               </div>
+
               <div className="p-4 border border-gray-200 rounded-lg flex items-start space-x-4">
                 <Backpack className="w-8 h-8 text-teal-600" />
                 <div>
@@ -216,6 +242,7 @@ export default function ReportLostItem() {
                   <p className="text-gray-400 text-sm mt-1">April 8, 2024</p>
                 </div>
               </div>
+
               <div className="p-4 border border-gray-200 rounded-lg flex items-start space-x-4">
                 <Wallet className="w-8 h-8 text-teal-600" />
                 <div>
@@ -224,6 +251,7 @@ export default function ReportLostItem() {
                   <p className="text-gray-400 text-sm mt-1">April 5, 2024</p>
                 </div>
               </div>
+
               <div className="p-4 border border-gray-200 rounded-lg flex items-start space-x-4">
                 <Key className="w-8 h-8 text-teal-600" />
                 <div>
@@ -232,8 +260,10 @@ export default function ReportLostItem() {
                   <p className="text-gray-400 text-sm mt-1">April 3, 2024</p>
                 </div>
               </div>
+
             </div>
           </div>
+
         </div>
       </div>
     </div>

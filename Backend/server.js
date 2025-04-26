@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
@@ -7,8 +8,9 @@ const FoundItem = require('./models/FoundItem');
 const UserContact = require('./models/UserContact');
 const { sendLostItemEmail, sendFoundItemEmail } = require('./utils/email');
 const app = express();
+app.use(express.json());
 const port = 5000;
-
+app.use(cors());
 app.use(bodyParser.json());
 function cosineSimilarity(vecA, vecB) {
   if (vecA.length !== vecB.length) {
