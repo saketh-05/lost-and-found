@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Smartphone, Backpack, Wallet, Key, MapPin, Mail } from 'lucide-react';
-
+import axios from 'axios';
 export default function ReportFoundItem() {
   const [formData, setFormData] = useState({
     email: '',
@@ -13,22 +13,41 @@ export default function ReportFoundItem() {
     },
     date: new Date().toISOString().split('T')[0],
   });
-
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false); // to show loading state
+  const [error, setError] = useState(''); // to show error message
+  const [successMessage, setSuccessMessage] = useState(''); 
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    setFormData({
-      email: '',
-      itemName: '',
-      description: '',
-      image: '',
-      city: '',
-      location: {
-        coordinates: [0, 0]
-      },
-      date: new Date().toISOString().split('T')[0],
-    });
+    setLoading(true); // start loading
+
+    try {
+      // Prepare the form data
+      const payload = {
+        email: formData.email,
+        itemName: formData.itemName,
+        description: formData.description,
+        image: formData.image,  // Ideally you should upload this image to a server
+        city: formData.city,
+        location: formData.location,
+        date: formData.date,
+      };
+
+      // Make POST request to the backend
+      const response = await axios.post('YOUR_BACKEND_URL/found-item', payload);
+
+      if (response.data.success) {
+        setSuccessMessage('Item reported successfully!');
+      } else {
+        setError('Failed to report the item. Please try again.');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('An error occurred while submitting the form.');
+    } finally {
+      setLoading(false); // stop loading
+    }
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-teal-500 to-white">
@@ -188,6 +207,9 @@ export default function ReportFoundItem() {
                   />
                 </div>
               </div>
+              {/* Displaying error or success message */}
+              {error && <p className="text-red-500">{error}</p>}
+              {successMessage && <p className="text-green-500">{successMessage}</p>}
               <button
                 type="submit"
                 className="w-full bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-colors"
