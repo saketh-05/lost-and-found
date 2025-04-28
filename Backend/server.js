@@ -8,6 +8,7 @@ const FoundItem = require('./models/FoundItem');
 const UserContact = require('./models/UserContact');
 const { sendLostItemEmail, sendFoundItemEmail } = require('./utils/email');
 const app = express();
+//begin here
 app.use(express.json());
 const port = 5000;
 app.use(cors());
