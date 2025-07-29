@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const UserContactSchema = new mongoose.Schema({
+const UserContactSchema = new Schema({
   email: { type: String, required: true, unique: true },
   city: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("UserContact", UserContactSchema);
+export default model("UserContact", UserContactSchema);

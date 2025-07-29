@@ -1,10 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const upload = require('../middleware/upload'); // Multer middleware
+import { Router } from 'express';
+const router = Router();
 
-const { reportLostItem } = require('./controllers/lostItemController');
+import { reportLostItem } from './controllers/lostItemController';
 
 // Route to report lost item with image upload
-router.post('/report-lost-item', upload.single('image'), reportLostItem);
+router.post('/report-lost-item', reportLostItem);
 
-module.exports = router;
+export default router;

@@ -5,6 +5,71 @@ const { calculateTextSimilarity } = require('../utils/textSimilarity');
 const { compareImageVectors } = require('../utils/imageSimilarity');
 const sendEmail = require('../utils/sendEmail');
 
+
+// Found item apis from server.js
+
+// Route for reporting found items
+// app.post('/found-item', async (req, res) => {
+//   const { email, itemName, description, image, city, location, featureVector } = req.body;
+
+//   try {
+//     const newFoundItem = new FoundItem({
+//       email, itemName, description, image, city, location, featureVector
+//     });
+
+//     await newFoundItem.save();
+
+//     const possibleLostItems = await LostItem.find({ city });
+
+//     let matchedItem = null;
+//     let highestSimilarity = 0;
+
+//     for (const lostItem of possibleLostItems) {
+//       const similarity = cosineSimilarity(featureVector, lostItem.featureVector);
+
+//       if (similarity > 0.8 && similarity > highestSimilarity) {
+//         matchedItem = lostItem;
+//         highestSimilarity = similarity;
+//       }
+//     }
+
+//     if (matchedItem) {
+//       sendFoundItemEmail(matchedItem, newFoundItem);
+//     }
+
+//     res.status(201).json({
+//       success: true,
+//       message: 'Found item reported successfully',
+//       matched: !!matchedItem,
+//       similarity: highestSimilarity
+//     });
+//   } catch (err) {
+//     res.status(500).json({
+//       success: false,
+//       message: 'Error reporting found item',
+//       error: err.message
+//     });
+//   }
+// });
+
+// // Route to search for found items
+// app.get('/found-item/search', async (req, res) => {
+//   const { itemName, city } = req.query;
+
+//   try {
+//     const query = {};
+    
+//     if (itemName) query.itemName = { $regex: new RegExp(itemName, 'i') };  // Case-insensitive search
+//     if (city) query.city = { $regex: new RegExp(city, 'i') };  // Case-insensitive search
+
+//     const foundItems = await FoundItem.find(query);
+//     res.status(200).json({ success: true, foundItems });
+//   } catch (err) {
+//     console.error("Error in found item search:", err);
+//     res.status(500).json({ success: false, message: 'Error searching found items', error: err });
+//   }
+// });
+
 exports.reportFoundItem = async (req, res) => {
   try {
     const { email, itemName, description, image, city, location, featureVector } = req.body;

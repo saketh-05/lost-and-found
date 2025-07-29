@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const lostItemSchema = new mongoose.Schema({
+const lostItemSchema = new Schema({
   email: { type: String, required: true },
   itemName: { type: String, required: true },
   description: { type: String, required: true },
@@ -9,7 +9,7 @@ const lostItemSchema = new mongoose.Schema({
   location: {
     coordinates: { type: [Number], required: true },
   },
-  featureVector: { type: [Number], required: false },  // Optional
+  featureVector: { type: [Number], required: false }, // Optional
 });
 
-const LostItem = mongoose.model('LostItem', lostItemSchema);
+export default LostItem = model("LostItem", lostItemSchema);

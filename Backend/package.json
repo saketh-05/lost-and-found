@@ -1,10 +1,20 @@
 {
+  "name": "lost-and-found-backend",
+  "version": "1.0.0",
+  "description": "Backend for Lost and Found application",
+  "main": "server.js",
+  "type": "module",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "mongoose": "^8.13.2",
     "multer": "^1.4.5-lts.2",
-    "nodemailer": "^6.10.1"
+    "nodemailer": "^6.10.1",
+    "nodemon": "^3.1.10"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   }
 }
