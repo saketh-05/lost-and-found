@@ -71,7 +71,7 @@ function AboutUs() {
               <h3 className="text-4xl font-bold mb-8 text-gray-800">Our Story</h3>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
                 Lost & Found was born from a simple yet powerful idea: what if we could create a world 
-                where losing something doesn't mean losing hope? Founded in 2024, our platform has grown 
+                where losing something doesn't mean losing hope? Founded in 2025, our platform has grown 
                 from a small community initiative to a comprehensive solution trusted by thousands.
               </p>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
@@ -186,27 +186,14 @@ function AboutUs() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="feature-card p-8 rounded-2xl card-hover fade-in text-center">
               <img
-                src="https://images.pexels.com/photos/3785079/pexels-photo-3785079.jpeg?auto=compress&cs=tinysrgb&w=300"
-                alt="Sarah Chen"
+                src="https://images.pexels.com/photos/3785087/pexels-photo-3785087.jpeg?auto=compress&cs=tinysrgb&w=300"
+                alt="Emily Rodriguez"
                 className="w-24 h-24 rounded-full mx-auto mb-6 object-cover"
               />
-              <h4 className="text-xl font-bold mb-2 text-gray-800">Sarah Chen</h4>
-              <p className="text-teal-600 font-semibold mb-4">Founder & CEO</p>
+              <h4 className="text-xl font-bold mb-2 text-gray-800">Udayy</h4>
+              <p className="text-teal-600 font-semibold mb-4">Web Developer</p>
               <p className="text-gray-600 leading-relaxed">
-                Passionate about connecting communities and leveraging technology for social good.
-              </p>
-            </div>
-
-            <div className="feature-card p-8 rounded-2xl card-hover fade-in text-center">
-              <img
-                src="https://images.pexels.com/photos/3785077/pexels-photo-3785077.jpeg?auto=compress&cs=tinysrgb&w=300"
-                alt="Marcus Johnson"
-                className="w-24 h-24 rounded-full mx-auto mb-6 object-cover"
-              />
-              <h4 className="text-xl font-bold mb-2 text-gray-800">Marcus Johnson</h4>
-              <p className="text-teal-600 font-semibold mb-4">Head of Technology</p>
-              <p className="text-gray-600 leading-relaxed">
-                Expert in building scalable platforms that prioritize user experience and security.
+                Passionate about developing and leveraging technology for social good.
               </p>
             </div>
 
@@ -216,8 +203,8 @@ function AboutUs() {
                 alt="Emily Rodriguez"
                 className="w-24 h-24 rounded-full mx-auto mb-6 object-cover"
               />
-              <h4 className="text-xl font-bold mb-2 text-gray-800">Emily Rodriguez</h4>
-              <p className="text-teal-600 font-semibold mb-4">Community Manager</p>
+              <h4 className="text-xl font-bold mb-2 text-gray-800">Saketh Surya</h4>
+              <p className="text-teal-600 font-semibold mb-4">Web developer</p>
               <p className="text-gray-600 leading-relaxed">
                 Dedicated to fostering meaningful connections within our growing community.
               </p>
@@ -243,7 +230,7 @@ function AboutUs() {
 
           <div className="border-t border-gray-800 pt-8 text-center">
             <p className="text-gray-500">
-              &copy; 2024 Lost & Found. All rights reserved.
+              &copy; 2025 Lost & Found. All rights reserved.
             </p>
           </div>
         </div>
