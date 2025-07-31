@@ -63,9 +63,9 @@ function Landing() {
               >
                 About Us
               </a>
-              <button className='bg-teal-500 px-6 py-2 rounded-full font-semibold hover:bg-teal-400 transition-colors'>
+              <Link to='/auth' className='bg-teal-500 px-6 py-2 rounded-full font-semibold hover:bg-teal-400 transition-colors'>
                 Sign In
-              </button>
+              </Link>
             </div>
           </div>
         </nav>
