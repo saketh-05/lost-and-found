@@ -58,7 +58,7 @@ function Landing() {
                 Found items
               </a>
               <a
-                href='#'
+                href='/about-us'
                 className='nav-link text-lg hover:text-teal-200 transition-colors'
               >
                 About Us
